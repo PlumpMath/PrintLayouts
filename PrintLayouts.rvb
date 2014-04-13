@@ -1,0 +1,34 @@
+﻿Option Explicit
+'Script written by <Junichiro Horikawa>
+'Script copyrighted by <Junichiro Horikawa>
+'Script version Saturday, July 02, 2011 1:20:04 AM
+
+Call Main()
+Sub Main()
+	Dim arrViews, strView, i,arrResults
+	Dim arrValues()
+
+	' Print view names
+
+	arrViews = Rhino.ViewNames(True,1)
+
+
+	If IsArray(arrViews) Then
+		For i = 0 To UBound(arrViews) Step 1
+			ReDim Preserve arrValues(i)
+			arrValues(i) = True
+		Next
+		arrResults = Rhino.CheckListBox(arrViews, arrValues,"select layout to print")
+
+		For i = 0 To UBound(arrViews) Step 1
+			If arrResults(i) = True Then
+				strView = arrViews(i)
+				'Rhino.Print strView
+				Rhino.CurrentView strView
+				Rhino.Command("-print go")
+			End If
+		Next
+	End If
+
+
+End Sub
